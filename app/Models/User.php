@@ -1,10 +1,13 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
+    use Notifiable;
+
     protected $table = 'user';
     protected $primaryKey = 'iduser';
     public $incrementing = true;
@@ -32,7 +35,7 @@ class User extends Model
      * @return array<string, string>
      */
 
-    protected function casts():array
+    protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
@@ -43,13 +46,19 @@ class User extends Model
     // One-to-One: user -> pemilik
     public function pemilik()
     {
-        return $this->hasOne(Pemilik::class, 'iduser','iduser');
+        return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
     }
 
     // Many-to-Many: user <-> role (pivot role_user)
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_user','iduser', 'idrole')
-                    ->withPivot('idrole_user', 'status');
+        return $this->belongsToMany(Role::class, 'role_user', 'iduser', 'idrole')
+            ->withPivot('idrole_user', 'status');
     }
+
+    public function roleUser()
+    {
+        return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
+    }
+
 }
