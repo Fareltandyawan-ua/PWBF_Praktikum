@@ -105,15 +105,15 @@ class LoginController extends Controller
 
         switch ($userRole) {
             case '1':
-                return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
+                return redirect()->route('admin.dashboard-admin')->with('success', 'Login berhasil!');
             case '2':
-                return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
+                return redirect()->route('dokter.dashboard-dokter')->with('success', 'Login berhasil!');
             case '3':
-                return redirect()->route('perawat.dashboard')->with('success', 'Login berhasil!');
+                return redirect()->route('perawat.dashboard-perawat')->with('success', 'Login berhasil!');
             case '4':
-                return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
+                return redirect()->route('resepsionis.dashboard-resepsionis')->with('success', 'Login berhasil!');
             default:
-                return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil!');
+                return redirect()->route('pemilik.dashboard-pemilik')->with('success', 'Login berhasil!');
         }
     }
 

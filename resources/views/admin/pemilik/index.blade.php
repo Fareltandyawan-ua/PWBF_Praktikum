@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemilik</title>
-</head>
-<body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Pemilik</th>
-                <th>Nomer WA</th>
-                <th>Alamat</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($pemilik as $index => $dataPemilik)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $dataPemilik->user->nama ?? 'user tidak ditemukan' }}</td>
-                <td>{{ $dataPemilik->no_wa }}</td>
-                <td>{{ $dataPemilik->alamat }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    
-</body>
-</html>
+@extends('layouts.admin')
+@section('content')
+<div class="container mt-4">
+  <h2>Data Pemilik</h2>
+  @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+  <a href="{{ route('admin.pemilik.create') }}" class="btn btn-success mb-3">+ Tambah</a>
+  <table class="table table-bordered">
+    <thead class="table-dark"><tr><th>No</th><th>No WA</th><th>Alamat</th><th>User</th><th>Aksi</th></tr></thead>
+    <tbody>
+      @forelse($pemilik as $i => $p)
+        <tr>
+          <td>{{ $i+1 }}</td>
+          <td>{{ $p->no_wa }}</td>
+          <td>{{ $p->alamat }}</td>
+          <td>{{ $p->user->nama ?? '-' }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="if(confirm('Yakin?')) document.getElementById('del-{{ $p->idpemilik }}').submit();">Hapus</button>
+            <form id="del-{{ $p->idpemilik }}" action="#" method="POST" style="display:none">@csrf @method('DELETE')</form>
+          </td>
+        </tr>
+      @empty
+        <tr><td colspan="5" class="text-center">Belum ada data</td></tr>
+      @endforelse
+    </tbody>
+  </table>
+</div>
+@endsection

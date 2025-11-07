@@ -1,31 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role User</title>
-</head>
-<body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama User</th>
-                <th>Nama Role</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($roleUser as $index => $dataRoleUser)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $dataRoleUser->user->nama }}</td>
-                <td>{{ $dataRoleUser->role->nama_role }}</td>
-                <td>{{ $dataRoleUser->status }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    
-</body>
-</html>
+@extends('layouts.admin')
+@section('content')
+    <div class="container mt-4">
+        <h2>Data Role User</h2>
+        @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>@endif
+        <a href="{{ route('admin.role-user.create') }}" class="btn btn-success mb-3">+ Tambah</a>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>No</th>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($roleUsers as $i => $ru)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $ru->user->nama ?? '-' }}</td>
+                        <td>{{ $ru->role->nama_role ?? '-' }}</td>
+                        <td>{{ $ru->status ? 'Aktif' : 'Nonaktif' }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning">Edit</button>
+                            <button class="btn btn-sm btn-danger"
+                                onclick="if(confirm('Yakin?')) document.getElementById('del-{{ $ru->idrole_user }}').submit();">Hapus</button>
+                            <form id="del-{{ $ru->idrole_user }}" action="#" method="POST" style="display:none">@csrf
+                                @method('DELETE')</form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">Belum ada data</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+@endsection

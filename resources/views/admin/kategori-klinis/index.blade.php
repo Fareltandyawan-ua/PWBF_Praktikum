@@ -1,26 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kategori Klinis</title>
-</head>
-<body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Kategori Klinis</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($kategoriKlinis as $index=>$dataKategoriKlinis)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $dataKategoriKlinis->nama_kategori_klinis }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-</html>
+@extends('layouts.admin')
+@section('content')
+<div class="container mt-4">
+  <h2>Data Kategori Klinis</h2>
+  @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+  <a href="{{ route('admin.kategori-klinis.create') }}" class="btn btn-success mb-3">+ Tambah</a>
+  <table class="table table-bordered">
+    <thead class="table-dark"><tr><th>No</th><th>Nama Kategori Klinis</th><th>Aksi</th></tr></thead>
+    <tbody>
+      @forelse($kategoriKlinis as $i => $k)
+        <tr>
+          <td>{{ $i+1 }}</td>
+          <td>{{ $k->nama_kategori_klinis }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="if(confirm('Yakin?')) document.getElementById('delete-{{ $k->idkategori_klinis }}').submit();">Hapus</button>
+            <form id="delete-{{ $k->idkategori_klinis }}" action="#" method="POST" style="display:none;">@csrf @method('DELETE')</form>
+          </td>
+        </tr>
+      @empty
+        <tr><td colspan="3" class="text-center">Belum ada data</td></tr>
+      @endforelse
+    </tbody>
+  </table>
+</div>
+@endsection

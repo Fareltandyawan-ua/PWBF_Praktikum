@@ -1,30 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode Tindakan Terapi</title>
-</head>
-<body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Kode</th>
-                <th>Deskripsi Tindakan Terapi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($kodeTindakanTerapi as $index=> $dataKodeTindakanTerapi)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $dataKodeTindakanTerapi->kode }}</td>
-                <td>{{ $dataKodeTindakanTerapi->deskripsi_tindakan_terapi }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-
-    </table>
-    
-</body>
-</html>
+@extends('layouts.admin')
+@section('content')
+<div class="container mt-4">
+  <h2>Data Kode Tindakan Terapi</h2>
+  @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+  <a href="{{ route('admin.kode-tindakan-terapi.create') }}" class="btn btn-success mb-3">+ Tambah</a>
+  <table class="table table-bordered">
+    <thead class="table-dark"><tr><th>No</th><th>Kode</th><th>Deskripsi</th><th>Kategori</th><th>Klinis</th><th>Aksi</th></tr></thead>
+    <tbody>
+      @forelse($kodes as $i => $k)
+        <tr>
+          <td>{{ $i+1 }}</td>
+          <td>{{ $k->kode }}</td>
+          <td>{{ $k->deskripsi_tindakan_terapi }}</td>
+          <td>{{ $k->kategori->nama_kategori ?? '-' }}</td>
+          <td>{{ $k->kategoriKlinis->nama_kategori_klinis ?? '-' }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="if(confirm('Yakin?')) document.getElementById('del-{{ $k->idkode_tindakan_terapi }}').submit();">Hapus</button>
+            <form id="del-{{ $k->idkode_tindakan_terapi }}" action="#" method="POST" style="display:none">@csrf @method('DELETE')</form>
+          </td>
+        </tr>
+      @empty
+        <tr><td colspan="6" class="text-center">Belum ada data</td></tr>
+      @endforelse
+    </tbody>
+  </table>
+</div>
+@endsection
