@@ -10,7 +10,7 @@ class RasHewan extends Model
     public $timestamps = false;
     protected $fillable = ['nama_ras'];
 
-    public function jenis()
+    public function jenisHewan()
     {
         return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }

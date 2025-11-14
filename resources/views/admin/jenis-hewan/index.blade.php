@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.lte.main')
 
 @section('content')
-<div class="container mt-4">
+<div class="container mt-1">
     <h2>Data Jenis Hewan</h2>
 
     @if (session('success'))

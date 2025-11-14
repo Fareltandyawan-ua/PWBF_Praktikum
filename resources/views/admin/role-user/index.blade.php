@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.lte.main')
 @section('content')
     <div class="container mt-4">
         <h2>Data Role User</h2>
